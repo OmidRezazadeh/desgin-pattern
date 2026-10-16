@@ -19,6 +19,8 @@ import { DeleteUserHandler } from './commands/delete-user.handler.js';
 import { EditUserHandler } from './commands/edit-user-handler.js';
 import { EditUserCommand } from './commands/edit-user-command.js';
 import { UpdateUserDto } from './dto/edit-user.dto.js';
+import { UserSwagger } from './swagger/customer.swagger.js';
+import { ApiEndpoint } from '../common/swagger/api-endpoint.decorator.js';
 
 @ApiTags('Users')
 @Controller('users')
@@ -51,11 +53,7 @@ export class UsersController {
   }
 
   @Post()
-@ApiOperation({ summary: 'Create a user' })
-@ApiResponse({
-  status: 201,
-  description: 'User created successfully',
-})
+  @ApiEndpoint(UserSwagger.create)
 create(
   @Body() createUserDto: CreateUserDto,
 ): Promise<User> {
@@ -63,6 +61,7 @@ create(
     new CreateUserCommand(createUserDto),
   );
 }
+
 
 @Delete(':id')
 @ApiOperation({ summary: 'Delete a user' })
