@@ -3,8 +3,9 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserCommand } from './create-user.command.js';
 import { UsersService } from '../users.service.js';
 import { User } from '../entities/user.entity.js';
+import { CommandHandler } from '@nestjs/cqrs';
 
-@Injectable()
+@CommandHandler(CreateUserCommand)
 export class CreateUserHandler {
   constructor(
     private readonly usersService: UsersService,

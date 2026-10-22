@@ -5,12 +5,14 @@ import { User } from './entities/user.entity.js';
 import { createFakeUsers } from './user-seed.js';
 import { CreateUserDto } from './dto/create-user.dto.js';
 import { UpdateUserDto } from './dto/edit-user.dto.js';
+import { CommandBus } from '@nestjs/cqrs';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+
   ) {}
 
   async seedUsers(count = 30): Promise<User[]> {
@@ -53,5 +55,18 @@ export class UsersService {
     this.userRepository.merge(user, updateUserDto);
   
     return this.userRepository.save(user);
+  }
+  
+  async findById(userId:number):Promise<User| null>{
+    
+    const user = await this.userRepository.findOneBy({
+      id: userId,
+    });
+
+    if (!user) {
+      throw new NotFoundException(`User with ID ${userId} not found`);
+    }
+    return user
+
   }
 }

@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RequestsModule } from './requests/requests.module.js';
 import { UsersModule } from './users/users.module.js';
+import { CqrsModule } from '@nestjs/cqrs';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -18,7 +19,9 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
       envFilePath: '.env',
     }),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
+      imports: [ConfigModule, 
+        
+      ],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres' as const,
