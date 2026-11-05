@@ -25,7 +25,7 @@ export class UsersService {
     createUserDto: CreateUserDto,
   ): Promise<User> {
     const user = this.userRepository.create(createUserDto);
-  
+    user.deactivate();
     return this.userRepository.save(user);
   }
 
